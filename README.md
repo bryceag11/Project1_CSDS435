@@ -1,6 +1,7 @@
 # CSDS Project 1 
 
 ## File Structure 
+```
 Project
 |   .gitignore
 |   main.py
@@ -23,7 +24,7 @@ Project
     |   network.py # Neural network design
     |   plotting.py # Plotting functions 
     |   preprocessing.py # Preprocessing functions
-
+```
 ## Usage 
 To train and test the networks, run the command in your terminal:
 ```python
