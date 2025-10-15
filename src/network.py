@@ -102,6 +102,8 @@ class PyTorchNNWrapper(BaseEstimator, ClassifierMixin):
                     print(f"  Early stopping at epoch {epoch+1}")
                     break
         
+        self.classes_ = np.unique(y)
+        self.n_features_in_ = X.shape[1]
         return self
     
     def predict(self, X):
@@ -122,7 +124,7 @@ class PyTorchNNWrapper(BaseEstimator, ClassifierMixin):
         # Return probabilities for both classes
         return np.hstack([1 - outputs, outputs])
 
-
+        
 def get_neural_network(input_size):
     """
     Get configured PyTorch neural network classifier

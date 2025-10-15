@@ -5,6 +5,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent
 DATA_DIR = PROJECT_ROOT / 'data'
 RESULTS_DIR = PROJECT_ROOT / 'results'
+LOGS_DIR = PROJECT_ROOT / 'tensorboard_logs'
 
 # Dataset paths (use actual project filenames)
 DATASETS = {
@@ -14,3 +15,4 @@ DATASETS = {
 
 # Create directories if they don't exist
 RESULTS_DIR.mkdir(exist_ok=True)
+LOGS_DIR.mkdir(exist_ok=True)

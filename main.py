@@ -1,13 +1,17 @@
 # main.py
 import numpy as np
 import pandas as pd
-from src.config import DATASETS, RESULTS_DIR
+from src.config import DATASETS, RESULTS_DIR, LOGS_DIR
 from src.data_loader import load_data
 from src.preprocessing import preprocess_data
 from src.classifiers import get_classifiers
 from src.network import get_neural_network
 from src.evaluation import evaluate_all_models
 from src.plotting import generate_all_plots, plot_algorithm_comparison, create_summary_table
+from torch.utils.tensorboard import SummaryWriter
+from datetime import datetime
+
+DEFAULT_RUN_LABEL = "add a layer"
 
 def run_experiment(dataset_path, dataset_name):
     """Run all 6 classifiers on one dataset"""
@@ -22,12 +26,20 @@ def run_experiment(dataset_path, dataset_name):
     print(f"Class distribution: {np.bincount(y)}")
     
     # Get all classifiers
-    # classifiers = get_classifiers()
-    classifiers = {}
+    classifiers = get_classifiers()
     classifiers['Neural Network'] = get_neural_network(input_size=X_processed.shape[1])
-    
+
+    run_label = DEFAULT_RUN_LABEL
+    if run_label == "default_run":
+        run_label = datetime.now().strftime("run_%Y%m%d-%H%M%S")
+
+    run_dir = LOGS_DIR / dataset_name / run_label
+    writer = SummaryWriter(log_dir=run_dir)
+
     # Evaluate all models with 10-fold CV
-    results = evaluate_all_models(classifiers, X_processed, y, cv=10)
+    results = evaluate_all_models(classifiers, X_processed, y, cv=10, writer=writer, dataset_name=dataset_name)
+
+    writer.close()
     
     # Save results
     results_df = pd.DataFrame(results)
